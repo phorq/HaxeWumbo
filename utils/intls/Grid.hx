@@ -36,7 +36,7 @@ class Grid {
 	
 	private var held:Bool = false;	
 	public function update(input:Input) {
-		draw();
+		//draw();
 		//Only works on flash for some reason...
 		#if !flash
 		if (input.getKeyCode() == 90 && input.getCharCode() == 0 && !held) {

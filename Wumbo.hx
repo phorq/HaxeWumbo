@@ -1,6 +1,7 @@
 package w2d;
 
 import flash.events.Event;
+typedef Button = utils.intls.Button;
 
 typedef Line = utils.Line;
 typedef Text = utils.Text;
@@ -19,6 +20,7 @@ class Wumbo {
 	static public var line:			Line = new Line(grid);
 	static public var text:			Text = new Text(grid);
 	static public var rectangle:	Rectangle = new Rectangle(grid);
+	static public var button:		Button = new Button();
 	
 	public function new(w:Int, h:Int) {
 		input = new Input();
