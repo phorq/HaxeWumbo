@@ -39,10 +39,10 @@ class Grid {
 		//draw();
 		//Only works on flash for some reason...
 		#if !flash
-		if (input.getKeyCode() == 90 && input.getCharCode() == 0 && !held) {
+		if (input.keyPressed(90) && input.charPressed(0) && !held) {
 			toggleFullscreen();
 			held = true;
-		} else if (!(input.getKeyCode() == 90 && input.getCharCode() == 0) && held) held = false;
+		} else if (!(input.keyPressed(90) && input.charPressed(0)) && held) held = false;
 		#end
 		#if flash
 		if (input.getKeyCode() == 122 && !held) {
