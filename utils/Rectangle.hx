@@ -1,10 +1,8 @@
 package utils;
-import utils.intls.Grid;
 import w2d.Wumbo;
 
 class Rectangle {
 	
-	private var grid:Grid;
 	private var x:Float;
 	private var y:Float;
 	private var w:Float;
@@ -12,7 +10,7 @@ class Rectangle {
 	private var t:Float;
 	private var c:Int;
 	
-	public function new (?grid:Grid, ?x:Float, ?y:Float, ?w:Float, ?h:Float, ?t:Float, ?c:Int) {
+	public function new (?x:Float, ?y:Float, ?w:Float, ?h:Float, ?t:Float, ?c:Int) {
 		this.x = x;
 		this.y = y;
 		this.w = w;
@@ -22,12 +20,10 @@ class Rectangle {
 	}
 	
 	public function draw (?x:Float, ?y:Float, ?w:Float, ?h:Float, ?t:Float, ?c:Int) {
-		var output:Rectangle = new Rectangle(x, y, w, h);
 		Wumbo.line.draw(w + x, y, w + x, h + y, t, c);
 		Wumbo.line.draw(x, h + y, w + x, h + y, t, c);
 		Wumbo.line.draw(x, y, x, h + y, t, c);
 		Wumbo.line.draw(x, y, w + x, y, t, c);
-		return output;
 	}
 	
 	public function getX() {
