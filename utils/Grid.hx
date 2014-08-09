@@ -1,4 +1,4 @@
-package utils.intls;
+package utils;
 import w2d.Wumbo;
 
 class Grid {
@@ -9,14 +9,16 @@ class Grid {
 	private var borderX:Int;
 	private var borderY:Int;
 	private var size:Float;
+	private var delta:Array<Int>;
 	
 	public function new(?w:Int, ?h:Int) {
 		width = w;
 		height = h;
+		delta = new Array<Int>();
 	}
 	
 	//sets height and width size for grid tiles automagically
-	public function setSize(wx, wy) {
+	public function setSize(wx:Int, wy:Int) {
 		var winR:Float = wx / wy;
 		var gridR:Float = Math.abs(width / height);
 		if (winR >  gridR) {
@@ -30,27 +32,30 @@ class Grid {
 		}
 	}
 	
-	public function draw() {
-		Wumbo.rectangle.draw(0, 0, width, height);
-	}
-	
 	private var held:Bool = false;	
-	public function update(input:Input) {
+	public function update() {
 		//draw();
 		//Only works on flash for some reason...
 		#if !flash
-		if (input.keyPressed(90) && input.charPressed(0) && !held) {
+		if (Wumbo.input.keyPressed(90, 0) && !held) {
 			toggleFullscreen();
 			held = true;
-		} else if (!(input.keyPressed(90) && input.charPressed(0)) && held) held = false;
+		} else if (!(Wumbo.input.keyPressed(90, 0)) && held) held = false;
 		#end
 		#if flash
-		if (input.getKeyCode() == 122 && !held) {
+		if (Wumbo.input.keyPressed(122,0) && !held) {
 			toggleFullscreen();
 			held = true;
-		} else if (input.getKeyCode() != 122 && held) held = false;
+		} else if (!Wumbo.input.keyPressed(122,0) && held) held = false;
 		#end
-			
+		var wx = flash.Lib.current.stage.stageWidth;
+		var wy = flash.Lib.current.stage.stageHeight;
+		if (delta[0] != wx || delta[1] != wy) {
+			setSize(wx, wy);
+			Wumbo.refresh();
+		}
+		delta[0] = wx;
+		delta[1] = wy;
 	}
 	
 	public function toPixelX(x:Float) {
