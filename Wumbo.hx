@@ -8,10 +8,10 @@ typedef Rectangle = utils.Rectangle;
 typedef Grid = utils.Grid;
 typedef Input = utils.Input;
 
-class Wumbo {
+class Wumbo extends Grid{
 	
-	static public var update:Float->Void = null;
-	static public var draw:Void->Void = null;
+	//public var update:Float->Void = null;
+	public var draw:Void->Void;
 	
 	private var timer:Float = 0;
 	
@@ -28,9 +28,9 @@ class Wumbo {
 	}
 	
 	public function new(w:Int, h:Int) {
+		super(w, h);
 		input = new Input();
-		grid.setRatio(w, h);
-		grid.setSize(flash.Lib.current.stage.stageWidth, flash.Lib.current.stage.stageHeight);
+		setSize(flash.Lib.current.stage.stageWidth, flash.Lib.current.stage.stageHeight);
 		flash.Lib.current.addEventListener(Event.ENTER_FRAME, function(e:Event) {
 			Wumbo.update((flash.Lib.getTimer() - timer) * .001);
 			timer = flash.Lib.getTimer();

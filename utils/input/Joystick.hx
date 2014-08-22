@@ -17,7 +17,6 @@ class Joystick {
 			deviceCode.insert(deviceCode.length, e.device);
 			ctrlCode.insert(getCtrlr(e), new Array<Int>());
 			controller++;
-			e.
 		});
 		
 		/*flash.Lib.current.stage.addEventListener( JoystickEvent.DEVICE_REMOVED, function(e:JoystickEvent) {
