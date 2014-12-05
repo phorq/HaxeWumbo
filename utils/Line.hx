@@ -21,7 +21,7 @@ class Line {
 	
 	public function draw (?x1:Float, ?y1:Float, ?x2:Float, ?y2:Float, ?thickness:Float, ?color:Int) {
 		var line = new flash.display.Sprite();
-		line.graphics.lineStyle(Wumbo.grid.getSize() * thickness, color);
+		line.graphics.lineStyle(Wumbo.grid.getSize() * thickness, color, 2);
 		line.graphics.moveTo(Wumbo.grid.toPixelX(x1), Wumbo.grid.toPixelY(y1));
 		line.graphics.lineTo(Wumbo.grid.toPixelX(x2), Wumbo.grid.toPixelY(y2));
 		flash.Lib.current.addChild(line);

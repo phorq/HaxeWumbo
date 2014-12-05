@@ -1,5 +1,6 @@
 package w2d;
 
+import flash.display.Stage;
 import openfl.events.Event;
 
 typedef Line = utils.Line;
@@ -8,10 +9,10 @@ typedef Rectangle = utils.Rectangle;
 typedef Grid = utils.Grid;
 typedef Input = utils.Input;
 
-class Wumbo extends Grid{
-	
-	//public var update:Float->Void = null;
-	public var draw:Void->Void;
+class Wumbo{
+		
+	static public var update:Float->Void = null;
+	static public var draw:Void->Void = null;
 	
 	private var timer:Float = 0;
 	
@@ -24,15 +25,32 @@ class Wumbo extends Grid{
 	
 	static public function refresh() {
 		flash.Lib.current.removeChildren();
-		Wumbo.draw();
+		draw();
+	}
+	
+	public function add(w:Wumbo) {
+		grid.add(w);
+	}
+	
+	public function get(ndx:Int) {
+		for (i in grid.getNest()) {
+			ndx--;
+			if(ndx == 0) return i;
+		}
+		return null;
+	}
+	
+	public function remove(w:Wumbo) {
+		grid.remove(w);
 	}
 	
 	public function new(w:Int, h:Int) {
-		super(w, h);
+		//super();
 		input = new Input();
-		setSize(flash.Lib.current.stage.stageWidth, flash.Lib.current.stage.stageHeight);
+		grid.setRatio(w, h);
+		grid.setSize(flash.Lib.current.stage.stageWidth, flash.Lib.current.stage.stageHeight);
 		flash.Lib.current.addEventListener(Event.ENTER_FRAME, function(e:Event) {
-			Wumbo.update((flash.Lib.getTimer() - timer) * .001);
+			update((flash.Lib.getTimer() - timer) * .001);
 			timer = flash.Lib.getTimer();
 		});
 		

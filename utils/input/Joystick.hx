@@ -13,19 +13,10 @@ class Joystick {
 		ctrlCode[0] = new Array<Int>();
 		deviceCode = new Array<Int>();
 		controller = 0;
-		flash.Lib.current.stage.addEventListener( JoystickEvent.DEVICE_ADDED, function(e:JoystickEvent) {
-			deviceCode.insert(deviceCode.length, e.device);
-			ctrlCode.insert(getCtrlr(e), new Array<Int>());
-			controller++;
-		});
-		
-		/*flash.Lib.current.stage.addEventListener( JoystickEvent.DEVICE_REMOVED, function(e:JoystickEvent) {
-			ctrlCode.remove(ctrlCode[e.device]);
-			deviceCode.remove(deviceCode.indexOf(e.device)-1);
-		});*/
 		
 		flash.Lib.current.stage.addEventListener( JoystickEvent.AXIS_MOVE, function(e:JoystickEvent) {
 			fixCtrlr(e);
+			//trace(getCtrlr(e) + ", " + e.axis.length);
 			#if android
 			var length = 14;
 			#end
@@ -34,11 +25,12 @@ class Joystick {
 			#end
 			for (i in 0...length) ctrlCode[getCtrlr(e)].remove(i);
 			for (i in axisCode(e)) ctrlCode[getCtrlr(e)].insert(i, i);
-			//controller = e.device;
+			//trace(e);
 			Wumbo.refresh();
 		});
 		
 		flash.Lib.current.stage.addEventListener(JoystickEvent.BUTTON_DOWN, function(e:JoystickEvent) {
+			//trace(e.id);
 			fixCtrlr(e);
 			var code:Int = translateCode(e.id + 14);
 			
@@ -46,15 +38,20 @@ class Joystick {
 				ctrlCode[getCtrlr(e)].remove(code);
 				ctrlCode[getCtrlr(e)].insert(code, code);
 			}
-			//controller = e.device;
+			
+			//trace(code + ", " + e.id);
+			
 			Wumbo.refresh();
 		});
 		flash.Lib.current.stage.addEventListener(JoystickEvent.BUTTON_UP, function(e:JoystickEvent) {
 			fixCtrlr(e);
 			var code:Int = translateCode(e.id + 14);
 			ctrlCode[getCtrlr(e)].remove(code);
-			//controller = e.device;
 			Wumbo.refresh();
+		});
+		
+		flash.Lib.current.stage.addEventListener(JoystickEvent.HAT_MOVE, function(e:JoystickEvent) {
+			//trace(e.id);
 		});
 		
 	}
@@ -81,8 +78,8 @@ class Joystick {
 			else if (e.axis[14] <= -.5) ctrlCode.insert(ctrlCode.length, 5);
 		#end
 
-			if (e.axis[e.axis.length - 2] >= 0) ctrlCode.insert(ctrlCode.length, 8);
-			if (e.axis[e.axis.length - 1] >= 0) ctrlCode.insert(ctrlCode.length, 9);
+			if (e.axis[e.axis.length - 2] >= 0.5) ctrlCode.insert(ctrlCode.length, 8);
+			if (e.axis[e.axis.length - 1] >= 0.5) ctrlCode.insert(ctrlCode.length, 9);
 		#if android
 			if (e.axis[e.axis.length - 3] < -.5) ctrlCode.insert(ctrlCode.length, 10);
 			else if (e.axis[e.axis.length - 3] > .5) ctrlCode.insert(ctrlCode.length, 11);
@@ -120,9 +117,9 @@ class Joystick {
 		return ctrlCode;
 	}
 	
-	public function ctrlPressed(ctrlC:Int) {
+	public function ctrlPressed(ctrlR:Int, ctrlC:Int) {
 		var pressed:Bool = false;
-		for (i in ctrlCode[0])
+		for (i in ctrlCode[ctrlR])
 			if (i == ctrlC) pressed = true;
 		return pressed;
 	}
@@ -133,9 +130,18 @@ class Joystick {
 	
 	public function fixCtrlr(e:JoystickEvent) {
 		for (i in deviceCode)
-			if (i == e.device) return;
+			if (i == e.device || ctrlCode[getCtrlr(e)].length == 0) {
+				//trace(ctrlCode[getCtrlr(e)]);
+				return;
+			}
 		deviceCode.insert(deviceCode.length, e.device);
 		ctrlCode.insert(getCtrlr(e), new Array<Int>());
 		controller++;
+		trace(ctrlCode[getCtrlr(e)]);
+		/*if (e.axis[0] < 0) trace("ouya");
+		else if (e.axis[e] != 0) {
+			trace("ps4");
+		}
+		else trace("xbox 360");*/
 	}
 }

@@ -4,21 +4,24 @@ import w2d.Wumbo;
 import utils.input.Joystick;
 import utils.input.Keyboard;
 import utils.input.Mouse;
+import utils.input.Multitouch;
 
 class Input
 {	
 	static private var joystick:Joystick;
 	static private var keyboard:Keyboard;
 	static private var mouse:Mouse;
+	static private var multi:Multitouch;
 	
 	public function new() 
 	{
 		joystick = new Joystick();
 		keyboard = new Keyboard();
 		mouse = new Mouse();
+		multi = new Multitouch();
 	}
 	
-	public function ctrlPressed(ctrlC:Int) return joystick.ctrlPressed(ctrlC);
+	public function ctrlPressed(ctrlR:Int, ctrlC:Int) return joystick.ctrlPressed(ctrlR, ctrlC);
 	public function keyPressed(keyCode:Int, ?charCode:Int) return keyboard.keyPressed(keyCode, charCode);
 	public function mouseClicked(x:Float, y:Float, w:Float, h:Float) return mouse.mouseClicked(x, y, w, h);
 	

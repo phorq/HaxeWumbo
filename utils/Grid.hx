@@ -11,10 +11,13 @@ class Grid {
 	private var size:Float;
 	private var delta:Array<Int>;
 	
+	private var nestGrid:Array<Wumbo>;
+	
 	public function new(?w:Int, ?h:Int) {
 		width = w;
 		height = h;
 		delta = new Array<Int>();
+		nestGrid = new Array<Wumbo>();
 	}
 	
 	//sets height and width size for grid tiles automagically
@@ -57,6 +60,16 @@ class Grid {
 		delta[0] = wx;
 		delta[1] = wy;
 	}
+	
+	public function add(w:Wumbo) {
+		nestGrid.insert(nestGrid.length, w);
+	}
+	
+	public function remove(w:Wumbo) {
+		nestGrid.remove(w);
+	}
+	
+	public function getNest() return nestGrid;
 	
 	public function toPixelX(x:Float) {
 		return Std.int((x * size) + borderX);
